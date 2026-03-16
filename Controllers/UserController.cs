@@ -16,6 +16,12 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        return Ok(await _userService.GetAllUsersAsync());
+    }
+
     [HttpGet("owners")]
     public async Task<IActionResult> GetOwners()
     {

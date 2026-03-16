@@ -1,5 +1,7 @@
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/appsettings.Development.json
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/appsettings.json
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/DataSeed/ilceler.json
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/DataSeed/sehirler.json
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/halisaha_backend.staticwebassets.endpoints.json
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/halisaha_backend
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/halisaha_backend.deps.json
@@ -33,6 +35,8 @@
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Microsoft.OpenApi.dll
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Mono.TextTemplating.dll
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Npgsql.dll
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Swashbuckle.AspNetCore.Swagger.dll
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -103,6 +107,7 @@
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/halisaha_backend.csproj.CoreCompileInputs.cache
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/halisaha_backend.MvcApplicationPartsAssemblyInfo.cs
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/halisaha_backend.MvcApplicationPartsAssemblyInfo.cache
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/halisaha_backend.sourcelink.json
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/rjimswa.dswa.cache.json
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/rjsmrazor.dswa.cache.json
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/rjsmcshtml.dswa.cache.json
@@ -118,8 +123,3 @@
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/halisaha_backend.pdb
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/halisaha_backend.genruntimeconfig.cache
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/ref/halisaha_backend.dll
-/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Npgsql.dll
-/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
-/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/DataSeed/ilceler.json
-/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/DataSeed/sehirler.json
-/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/halisaha_backend.sourcelink.json

@@ -12,6 +12,7 @@ public interface IAuthService
 public interface IUserService
 {
     Task<IEnumerable<UserResponse>> GetAllOwnersAsync();
+    Task<IEnumerable<UserResponse>> GetAllUsersAsync();
     Task<bool> ToggleStatusAsync(int id);
     Task<bool> DeleteAsync(int id);
 }
@@ -22,11 +23,13 @@ public interface ILocationService
     Task<IEnumerable<DistrictDto>> GetDistrictsAsync(int cityId);
 }
 
-public interface IAstroturfService
+public interface IPitchService
 {
-    Task<IEnumerable<Astroturf>> GetAllAsync(int? districtId = null);
-    Task<Astroturf?> GetByIdAsync(int id);
-    Task<bool> UpdateAsync(int id, UpdateAstroturfRequest request);
+    Task<IEnumerable<PitchResponseDto>> GetAllAsync(int? districtId = null);
+    Task<IEnumerable<PitchResponseDto>> GetByOwnerAsync(int ownerId);
+    Task<PitchResponseDto?> GetByIdAsync(int id);
+    Task<bool> CreateAsync(int ownerId, CreatePitchRequest request);
+    Task<bool> UpdateAsync(int id, UpdatePitchRequest request);
     Task<bool> DeleteAsync(int id);
     Task<bool> ToggleStatusAsync(int id);
 }
@@ -34,7 +37,7 @@ public interface IAstroturfService
 public interface IAppointmentService
 {
     Task<bool> CreateAppointmentAsync(CreateAppointmentRequest request);
-    Task<object> GetAppointmentsByAstroturfAsync(int astroturfId);
+    Task<IEnumerable<Appointment>> GetAppointmentsByPitchAsync(int pitchId, DateTime? startDate = null);
     Task<bool> UpdateAppointmentAsync(int id, UpdateAppointmentRequest request);
     Task<bool> CancelAppointmentAsync(int id);
 }

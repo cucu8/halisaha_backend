@@ -10,11 +10,11 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-    public DbSet<User> Users { get; set; }
-    public DbSet<City> Cities { get; set; }
-    public DbSet<District> Districts { get; set; }
-    public DbSet<Astroturf> Astroturfs { get; set; }
-    public DbSet<Appointment> Appointments { get; set; }
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<City> Cities { get; set; } = null!;
+    public DbSet<District> Districts { get; set; } = null!;
+    public DbSet<Pitch> Pitches { get; set; } = null!;
+    public DbSet<Appointment> Appointments { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

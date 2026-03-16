@@ -6,5 +6,5 @@ public class District
     public string Name { get; set; } = string.Empty;
     public int CityId { get; set; }
     public City City { get; set; } = null!;
-    public virtual ICollection<Astroturf> Astroturfs { get; set; } = new List<Astroturf>();
+    public virtual ICollection<Pitch> Pitches { get; set; } = new List<Pitch>();
 }

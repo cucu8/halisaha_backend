@@ -26,11 +26,14 @@ public class AuthService : IAuthService
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             return null;
 
+        if (!user.IsActive)
+            throw new Exception("Account is inactive.");
+
         int? pitchId = null;
         if (user.Role == UserRole.Owner)
         {
-            var astroturf = await _context.Astroturfs.FirstOrDefaultAsync(a => a.OwnerId == user.Id);
-            pitchId = astroturf?.Id;
+            var pitch = await _context.Pitches.FirstOrDefaultAsync(a => a.OwnerId == user.Id);
+            pitchId = pitch?.Id;
         }
 
         var token = _tokenService.CreateToken(user);
@@ -44,24 +47,14 @@ public class AuthService : IAuthService
 
         var owner = new User
         {
-            Name = request.Username,
+            Name = request.FullName,
             PhoneNumber = request.PhoneNumber,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Role = UserRole.Owner
+            Role = UserRole.Owner,
+            IsActive = true
         };
 
         _context.Users.Add(owner);
-        await _context.SaveChangesAsync();
-
-        var astroturf = new Astroturf
-        {
-            Name = request.PitchName,
-            OwnerId = owner.Id,
-            Address = request.Address ?? string.Empty,
-            DistrictId = request.DistrictId
-        };
-
-        _context.Astroturfs.Add(astroturf);
         await _context.SaveChangesAsync();
 
         return true;

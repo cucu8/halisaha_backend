@@ -18,30 +18,50 @@ public class UserService : IUserService
 
     public async Task<IEnumerable<UserResponse>> GetAllOwnersAsync()
     {
-        var owners = await _context.Users
-            .Where(u => u.Role == UserRole.Owner)
-            .ToListAsync();
+        return await GetUsersByRoleAsync(UserRole.Owner);
+    }
 
-        var ownerIds = owners.Select(o => o.Id).ToList();
+    public async Task<IEnumerable<UserResponse>> GetAllUsersAsync()
+    {
+        return await GetUsersByRoleAsync(null);
+    }
 
-        var pitches = await _context.Astroturfs
+    private async Task<IEnumerable<UserResponse>> GetUsersByRoleAsync(UserRole? role)
+    {
+        var query = _context.Users.AsQueryable();
+        if (role.HasValue)
+        {
+            query = query.Where(u => u.Role == role.Value);
+        }
+
+        var users = await query.ToListAsync();
+        var userIds = users.Select(u => u.Id).ToList();
+
+        var pitches = await _context.Pitches
             .Include(a => a.District)
             .ThenInclude(d => d.City)
-            .Where(a => ownerIds.Contains(a.OwnerId))
+            .Where(a => userIds.Contains(a.OwnerId))
             .ToListAsync();
 
-        return owners.Select(u =>
+        return users.Select(u =>
         {
-            var pitch = pitches.FirstOrDefault(p => p.OwnerId == u.Id);
+            var userPitches = pitches.Where(p => p.OwnerId == u.Id)
+                .Select(p => new OwnerPitchDto(
+                    p.Id,
+                    p.Name,
+                    p.District?.City?.Name,
+                    p.District?.Name,
+                    p.Address,
+                    p.IsActive
+                )).ToList();
+
             return new UserResponse(
                 u.Id,
                 u.Name,
                 u.PhoneNumber,
                 u.Role,
                 u.IsActive,
-                pitch?.Name,
-                pitch?.District?.City?.Name,
-                pitch?.District?.Name
+                userPitches
             );
         });
     }
@@ -53,8 +73,8 @@ public class UserService : IUserService
 
         user.IsActive = !user.IsActive;
 
-        // Also toggle associated astroturfs
-        var pitches = await _context.Astroturfs.Where(a => a.OwnerId == id).ToListAsync();
+        // Also toggle associated pitches
+        var pitches = await _context.Pitches.Where(a => a.OwnerId == id).ToListAsync();
         foreach (var pitch in pitches)
         {
             pitch.IsActive = user.IsActive;
@@ -69,16 +89,16 @@ public class UserService : IUserService
         var user = await _context.Users.FindAsync(id);
         if (user == null) return false;
 
-        // Find associated astroturfs
-        var pitches = await _context.Astroturfs.Where(a => a.OwnerId == id).ToListAsync();
+        // Find associated pitches
+        var pitches = await _context.Pitches.Where(a => a.OwnerId == id).ToListAsync();
         var pitchIds = pitches.Select(p => p.Id).ToList();
 
         // Find and remove associated appointments
-        var appointments = await _context.Appointments.Where(app => pitchIds.Contains(app.AstroturfId)).ToListAsync();
+        var appointments = await _context.Appointments.Where(app => pitchIds.Contains(app.PitchId)).ToListAsync();
         _context.Appointments.RemoveRange(appointments);
 
-        // Remove astroturfs
-        _context.Astroturfs.RemoveRange(pitches);
+        // Remove pitches
+        _context.Pitches.RemoveRange(pitches);
 
         // Remove user
         _context.Users.Remove(user);

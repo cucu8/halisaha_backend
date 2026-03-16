@@ -22,7 +22,7 @@ public class AppointmentService : IAppointmentService
         var endTime = startTime.AddHours(1);
 
         var exists = await _context.Appointments
-            .AnyAsync(a => a.AstroturfId == request.AstroturfId &&
+            .AnyAsync(a => a.PitchId == request.PitchId &&
                            ((a.Date >= startTime && a.Date < endTime) ||
                             (a.Date.AddHours(1) > startTime && a.Date.AddHours(1) <= endTime)));
 
@@ -30,7 +30,7 @@ public class AppointmentService : IAppointmentService
 
         var appointment = new Appointment
         {
-            AstroturfId = request.AstroturfId,
+            PitchId = request.PitchId,
             Date = request.Date,
             CustomerName = request.CustomerName,
             CustomerPhoneNumber = request.CustomerPhoneNumber
@@ -41,10 +41,17 @@ public class AppointmentService : IAppointmentService
         return true;
     }
 
-    public async Task<object> GetAppointmentsByAstroturfAsync(int astroturfId)
+    public async Task<IEnumerable<Appointment>> GetAppointmentsByPitchAsync(int pitchId, DateTime? startDate = null)
     {
-        return await _context.Appointments
-            .Where(a => a.AstroturfId == astroturfId)
+        var query = _context.Appointments.Where(a => a.PitchId == pitchId);
+
+        if (startDate.HasValue)
+        {
+            var end = startDate.Value.AddDays(7);
+            query = query.Where(a => a.Date >= startDate.Value && a.Date < end);
+        }
+
+        return await query
             .OrderBy(a => a.Date)
             .ToListAsync();
     }

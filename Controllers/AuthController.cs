@@ -19,9 +19,16 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var response = await _authService.LoginAsync(request);
-        if (response == null) return Unauthorized("Invalid phone number or password.");
-        return Ok(response);
+        try
+        {
+            var response = await _authService.LoginAsync(request);
+            if (response == null) return Unauthorized("Invalid phone number or password.");
+            return Ok(response);
+        }
+        catch (Exception ex) when (ex.Message == "Account is inactive.")
+        {
+            return StatusCode(403, "Hesabınız pasif durumdadır. Lütfen yönetici ile iletişime geçin.");
+        }
     }
 
     [Authorize(Roles = "Admin")]

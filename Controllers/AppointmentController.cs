@@ -24,10 +24,10 @@ public class AppointmentController : ControllerBase
         return Ok("Appointment created successfully.");
     }
 
-    [HttpGet("{astroturfId}")]
-    public async Task<IActionResult> GetAppointments(int astroturfId)
+    [HttpGet("{pitchId}")]
+    public async Task<IActionResult> GetAppointments(int pitchId, [FromQuery] DateTime? startDate)
     {
-        var appointments = await _appointmentService.GetAppointmentsByAstroturfAsync(astroturfId);
+        var appointments = await _appointmentService.GetAppointmentsByPitchAsync(pitchId, startDate);
         return Ok(appointments);
     }
 

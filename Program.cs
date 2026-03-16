@@ -51,7 +51,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
-builder.Services.AddScoped<IAstroturfService, AstroturfService>();
+builder.Services.AddScoped<IPitchService, PitchService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 // Auth

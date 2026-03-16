@@ -1,6 +1,6 @@
 namespace HalisahaBackend.Domain.Entities;
 
-public class Astroturf
+public class Pitch
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
