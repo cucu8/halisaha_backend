@@ -1,0 +1,8 @@
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net10.0/halisaha_backend.csproj.AssemblyReference.cache
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net10.0/rpswa.dswa.cache.json
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net10.0/halisaha_backend.GeneratedMSBuildEditorConfig.editorconfig
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net10.0/halisaha_backend.AssemblyInfoInputs.cache
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net10.0/halisaha_backend.AssemblyInfo.cs
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net10.0/halisaha_backend.csproj.CoreCompileInputs.cache
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net10.0/halisaha_backend.MvcApplicationPartsAssemblyInfo.cs
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net10.0/halisaha_backend.MvcApplicationPartsAssemblyInfo.cache
