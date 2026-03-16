@@ -11,7 +11,7 @@ public interface IAuthService
 
 public interface IUserService
 {
-    Task<IEnumerable<User>> GetAllOwnersAsync();
+    Task<IEnumerable<UserResponse>> GetAllOwnersAsync();
     Task<bool> ToggleStatusAsync(int id);
     Task<bool> DeleteAsync(int id);
 }

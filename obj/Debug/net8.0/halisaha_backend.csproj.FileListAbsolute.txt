@@ -122,3 +122,4 @@
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/DataSeed/ilceler.json
 /Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/bin/Debug/net8.0/DataSeed/sehirler.json
+/Users/cuneytdonmez/Desktop/Projects/HalıSahaRandevu/halisaha_backend/obj/Debug/net8.0/halisaha_backend.sourcelink.json

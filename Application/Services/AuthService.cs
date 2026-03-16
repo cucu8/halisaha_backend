@@ -26,8 +26,15 @@ public class AuthService : IAuthService
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             return null;
 
+        int? pitchId = null;
+        if (user.Role == UserRole.Owner)
+        {
+            var astroturf = await _context.Astroturfs.FirstOrDefaultAsync(a => a.OwnerId == user.Id);
+            pitchId = astroturf?.Id;
+        }
+
         var token = _tokenService.CreateToken(user);
-        return new LoginResponse(token, user.Name, user.Role);
+        return new LoginResponse(token, user.Name, user.Role, pitchId);
     }
 
     public async Task<bool> CreateOwnerAsync(CreateOwnerRequest request)
@@ -37,7 +44,7 @@ public class AuthService : IAuthService
 
         var owner = new User
         {
-            Name = request.Name,
+            Name = request.Username,
             PhoneNumber = request.PhoneNumber,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             Role = UserRole.Owner
@@ -48,9 +55,9 @@ public class AuthService : IAuthService
 
         var astroturf = new Astroturf
         {
-            Name = request.AstroturfName,
+            Name = request.PitchName,
             OwnerId = owner.Id,
-            Address = request.Address,
+            Address = request.Address ?? string.Empty,
             DistrictId = request.DistrictId
         };
 
