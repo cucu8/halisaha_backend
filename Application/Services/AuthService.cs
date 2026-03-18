@@ -42,13 +42,14 @@ public class AuthService : IAuthService
 
     public async Task<bool> CreateOwnerAsync(CreateOwnerRequest request)
     {
-        if (await _context.Users.AnyAsync(u => u.PhoneNumber == request.PhoneNumber))
-            return false;
+        var normalizedPhone = request.PhoneNumber.Trim();
+        if (await _context.Users.AnyAsync(u => u.PhoneNumber == normalizedPhone))
+            throw new InvalidOperationException("PhoneNumberAlreadyExists");
 
         var owner = new User
         {
             Name = request.FullName,
-            PhoneNumber = request.PhoneNumber,
+            PhoneNumber = normalizedPhone,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
             Role = UserRole.Owner,
             IsActive = true

@@ -35,8 +35,14 @@ public class AuthController : ControllerBase
     [HttpPost("create-owner")]
     public async Task<IActionResult> CreateOwner(CreateOwnerRequest request)
     {
-        var success = await _authService.CreateOwnerAsync(request);
-        if (!success) return BadRequest("Owner could not be created or already exists.");
-        return Ok("Owner and astroturf created successfully.");
+        try
+        {
+            await _authService.CreateOwnerAsync(request);
+            return Ok("Owner and astroturf created successfully.");
+        }
+        catch (InvalidOperationException ex) when (ex.Message == "PhoneNumberAlreadyExists")
+        {
+            return BadRequest("Bu telefon numarası zaten kayıtlı.");
+        }
     }
 }

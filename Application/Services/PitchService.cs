@@ -32,7 +32,9 @@ public class PitchService : IPitchService
             p.Id,
             p.Name,
             p.Address,
+            p.District.City.Id,
             p.District.City.Name,
+            p.District.Id,
             p.District.Name,
             p.Owner.PhoneNumber,
             p.ContactPhoneNumber,
@@ -55,7 +57,9 @@ public class PitchService : IPitchService
                 p.Id,
                 p.Name,
                 p.Address,
+                p.District.City.Id,
                 p.District.City.Name,
+                p.District.Id,
                 p.District.Name,
                 p.Owner.PhoneNumber,
                 p.ContactPhoneNumber,
@@ -81,7 +85,9 @@ public class PitchService : IPitchService
             p.Id,
             p.Name,
             p.Address,
+            p.District.City.Id,
             p.District.City.Name,
+            p.District.Id,
             p.District.Name,
             p.Owner.PhoneNumber,
             p.ContactPhoneNumber,
@@ -131,12 +137,35 @@ public class PitchService : IPitchService
 
     public async Task<bool> UpdateAsync(int id, UpdatePitchRequest request)
     {
-        var pitch = await _context.Pitches.FindAsync(id);
+        var pitch = await _context.Pitches
+            .Include(p => p.PitchFeatures)
+            .FirstOrDefaultAsync(p => p.Id == id);
         if (pitch == null) return false;
 
         pitch.Name = request.Name;
+        pitch.DistrictId = request.DistrictId;
+        pitch.Address = request.Address ?? string.Empty;
+        pitch.ContactPhoneNumber = request.ContactPhoneNumber ?? string.Empty;
         pitch.HourlyPrice = request.HourlyPrice;
         pitch.IsActive = request.IsActive;
+
+        var featureIds = request.FeatureIds ?? new List<int>();
+        var validFeatureIds = await _context.Features
+            .Where(f => featureIds.Contains(f.Id))
+            .Select(f => f.Id)
+            .ToListAsync();
+
+        if (pitch.PitchFeatures.Count > 0)
+        {
+            _context.PitchFeatures.RemoveRange(pitch.PitchFeatures);
+        }
+
+        if (validFeatureIds.Count > 0)
+        {
+            _context.PitchFeatures.AddRange(
+                validFeatureIds.Select(featureId => new PitchFeature { PitchId = pitch.Id, FeatureId = featureId })
+            );
+        }
 
         await _context.SaveChangesAsync();
         return true;
