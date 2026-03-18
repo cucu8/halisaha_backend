@@ -58,6 +58,16 @@ public class PitchController : ControllerBase
         return success ? Ok("Pitch updated successfully.") : NotFound();
     }
 
+    [Authorize(Roles = "Admin,Owner")]
+    [HttpPatch("{id}/hourly-price")]
+    public async Task<IActionResult> UpdateHourlyPrice(int id, UpdatePitchPriceRequest request)
+    {
+        if (request.HourlyPrice < 0) return BadRequest("HourlyPrice must be non-negative.");
+
+        var success = await _pitchService.UpdateHourlyPriceAsync(id, request.HourlyPrice);
+        return success ? Ok("Pitch hourly price updated successfully.") : NotFound();
+    }
+
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)

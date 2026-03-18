@@ -40,6 +40,8 @@ public class UserService : IUserService
         var pitches = await _context.Pitches
             .Include(a => a.District)
             .ThenInclude(d => d.City)
+            .Include(a => a.PitchFeatures)
+            .ThenInclude(pf => pf.Feature)
             .Where(a => userIds.Contains(a.OwnerId))
             .ToListAsync();
 
@@ -52,6 +54,9 @@ public class UserService : IUserService
                     p.District?.City?.Name,
                     p.District?.Name,
                     p.Address,
+                    p.ContactPhoneNumber,
+                    p.HourlyPrice,
+                    p.PitchFeatures.Select(pf => pf.Feature.Name).ToList(),
                     p.IsActive
                 )).ToList();
 

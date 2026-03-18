@@ -23,6 +23,11 @@ public interface ILocationService
     Task<IEnumerable<DistrictDto>> GetDistrictsAsync(int cityId);
 }
 
+public interface IFeatureService
+{
+    Task<IEnumerable<FeatureDto>> GetAllAsync();
+}
+
 public interface IPitchService
 {
     Task<IEnumerable<PitchResponseDto>> GetAllAsync(int? districtId = null);
@@ -30,6 +35,7 @@ public interface IPitchService
     Task<PitchResponseDto?> GetByIdAsync(int id);
     Task<bool> CreateAsync(int ownerId, CreatePitchRequest request);
     Task<bool> UpdateAsync(int id, UpdatePitchRequest request);
+    Task<bool> UpdateHourlyPriceAsync(int id, decimal hourlyPrice);
     Task<bool> DeleteAsync(int id);
     Task<bool> ToggleStatusAsync(int id);
 }

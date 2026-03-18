@@ -3,6 +3,7 @@ using System;
 using HalisahaBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace halisaha_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260318121000_AddPitchHourlyPrice")]
+    partial class AddPitchHourlyPrice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -6337,90 +6340,6 @@ namespace halisaha_backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("HalisahaBackend.Domain.Entities.Feature", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Features");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Otopark"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Kafe / Büfe"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Duş"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Aydınlatma"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Klima (Kapalı Saha)"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Çocuk Oyun Alanı"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Maç Kaydı"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Kiralık Kaleci"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Name = "Kiralık Krampon"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            Name = "Kiralık Oyuncu"
-                        });
-                });
-
-            modelBuilder.Entity("HalisahaBackend.Domain.Entities.PitchFeature", b =>
-                {
-                    b.Property<int>("PitchId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FeatureId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("PitchId", "FeatureId");
-
-                    b.HasIndex("FeatureId");
-
-                    b.ToTable("PitchFeatures");
-                });
-
             modelBuilder.Entity("HalisahaBackend.Domain.Entities.Pitch", b =>
                 {
                     b.Property<int>("Id")
@@ -6430,10 +6349,6 @@ namespace halisaha_backend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ContactPhoneNumber")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -6526,25 +6441,6 @@ namespace halisaha_backend.Migrations
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("HalisahaBackend.Domain.Entities.PitchFeature", b =>
-                {
-                    b.HasOne("HalisahaBackend.Domain.Entities.Feature", "Feature")
-                        .WithMany("PitchFeatures")
-                        .HasForeignKey("FeatureId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HalisahaBackend.Domain.Entities.Pitch", "Pitch")
-                        .WithMany("PitchFeatures")
-                        .HasForeignKey("PitchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Feature");
-
-                    b.Navigation("Pitch");
-                });
-
             modelBuilder.Entity("HalisahaBackend.Domain.Entities.Pitch", b =>
                 {
                     b.HasOne("HalisahaBackend.Domain.Entities.District", "District")
@@ -6572,16 +6468,6 @@ namespace halisaha_backend.Migrations
             modelBuilder.Entity("HalisahaBackend.Domain.Entities.District", b =>
                 {
                     b.Navigation("Pitches");
-                });
-
-            modelBuilder.Entity("HalisahaBackend.Domain.Entities.Feature", b =>
-                {
-                    b.Navigation("PitchFeatures");
-                });
-
-            modelBuilder.Entity("HalisahaBackend.Domain.Entities.Pitch", b =>
-                {
-                    b.Navigation("PitchFeatures");
                 });
 #pragma warning restore 612, 618
         }

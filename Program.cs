@@ -51,6 +51,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IFeatureService, FeatureService>();
 builder.Services.AddScoped<IPitchService, PitchService>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
@@ -83,11 +84,10 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.Urls.Add("http://0.0.0.0:5000");
+// Use launchSettings.json / ASPNETCORE_URLS for binding
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
 
 app.UseCors("AllowAll");
 
