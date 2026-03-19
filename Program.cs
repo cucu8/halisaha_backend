@@ -84,6 +84,38 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Automatically apply migrations and seed the Admin user on startup
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        
+        // This will apply any pending EF Core migrations automatically when the app starts.
+        context.Database.Migrate();
+
+        // Seed the Admin user if it doesn't already exist
+        if (!context.Users.Any(u => u.PhoneNumber == "05334281441"))
+        {
+            context.Users.Add(new HalisahaBackend.Domain.Entities.User
+            {
+                Name = "Admin",
+                PhoneNumber = "05334281441",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("111111"),
+                Role = HalisahaBackend.Domain.Enums.UserRole.Admin,
+                IsActive = true
+            });
+            context.SaveChanges();
+        }
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while migrating or seeding the database.");
+    }
+}
+
 // Use launchSettings.json / ASPNETCORE_URLS for binding
 
 app.UseSwagger();

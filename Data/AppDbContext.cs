@@ -22,16 +22,7 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Seed Admin User
-        modelBuilder.Entity<User>().HasData(new User
-        {
-            Id = 1,
-            Name = "Admin",
-            PhoneNumber = "05334281441",
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword("111111"),
-            Role = UserRole.Admin,
-            IsActive = true
-        });
+        // Admin user seed moved to Program.cs to support dynamic hashing on startup without cluttering migrations.
 
         // Seed Cities from JSON
         var citiesPath = Path.Combine(Directory.GetCurrentDirectory(), "DataSeed", "sehirler.json");
