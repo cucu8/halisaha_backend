@@ -75,7 +75,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
     {
-        builder.WithOrigins("http://localhost:5173", "http://45.87.173.147:3001", "https://45.87.173.147:3001")
+        builder.WithOrigins(
+                    "http://localhost:5173", 
+                    "http://localhost:5174", 
+                    "http://45.87.173.147:3001", 
+                    "https://45.87.173.147:3001",
+                    "https://sahadayim.com.tr",
+                    "https://www.sahadayim.com.tr",
+                    "https://app.sahadayim.com.tr",
+                    "https://admin.sahadayim.com.tr"
+               )
                .SetIsOriginAllowed(origin => true) // allow any origin in development
                .AllowAnyMethod()
                .AllowAnyHeader()
