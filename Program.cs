@@ -83,7 +83,8 @@ builder.Services.AddCors(options =>
                     "https://sahadayim.com.tr",
                     "https://www.sahadayim.com.tr",
                     "https://app.sahadayim.com.tr",
-                    "https://admin.sahadayim.com.tr"
+                    "https://admin.sahadayim.com.tr",
+                    "https://dashboard.sahadayim.com.tr"
                )
                .SetIsOriginAllowed(origin => true) // allow any origin in development
                .AllowAnyMethod()

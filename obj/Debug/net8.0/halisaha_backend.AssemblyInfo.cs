@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("halisaha_backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+80fdd614f789a46854a087b521bf2ec476403b1d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4acdcda20bc583e1f658727d9be14ee20be7866")]
 [assembly: System.Reflection.AssemblyProductAttribute("halisaha_backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("halisaha_backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
