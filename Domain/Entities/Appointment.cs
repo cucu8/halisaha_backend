@@ -8,4 +8,6 @@ public class Appointment
     public DateTime Date { get; set; }
     public string CustomerName { get; set; } = string.Empty;
     public string CustomerPhoneNumber { get; set; } = string.Empty;
+    public bool IsSubscription { get; set; } = false;
+    public Guid? SubscriptionGroupId { get; set; }
 }

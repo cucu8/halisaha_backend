@@ -42,8 +42,8 @@ public interface IPitchService
 
 public interface IAppointmentService
 {
-    Task<bool> CreateAppointmentAsync(CreateAppointmentRequest request);
+    Task<CreateAppointmentResponse> CreateAppointmentAsync(CreateAppointmentRequest request);
     Task<IEnumerable<Appointment>> GetAppointmentsByPitchAsync(int pitchId, DateTime? startDate = null);
     Task<bool> UpdateAppointmentAsync(int id, UpdateAppointmentRequest request);
-    Task<bool> CancelAppointmentAsync(int id);
+    Task<bool> CancelAppointmentAsync(int id, bool cancelAll = false);
 }

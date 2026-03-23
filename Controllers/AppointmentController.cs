@@ -19,9 +19,10 @@ public class AppointmentController : ControllerBase
     [HttpPost("create")]
     public async Task<IActionResult> CreateAppointment(CreateAppointmentRequest request)
     {
-        var success = await _appointmentService.CreateAppointmentAsync(request);
-        if (!success) return BadRequest("Appointment slot is not available.");
-        return Ok("Appointment created successfully.");
+        var result = await _appointmentService.CreateAppointmentAsync(request);
+        if (!result.Success)
+            return Conflict(result); // 409 with conflict details
+        return Ok(result);
     }
 
     [HttpGet("{pitchId}")]
@@ -39,9 +40,9 @@ public class AppointmentController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> CancelAppointment(int id)
+    public async Task<IActionResult> CancelAppointment(int id, [FromQuery] bool cancelAll = false)
     {
-        var success = await _appointmentService.CancelAppointmentAsync(id);
+        var success = await _appointmentService.CancelAppointmentAsync(id, cancelAll);
         return success ? Ok("Appointment cancelled successfully.") : NotFound();
     }
 }

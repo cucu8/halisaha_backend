@@ -15,5 +15,8 @@ public record CreateOwnerRequest(string PhoneNumber, string Password, string Ful
 public record CreatePitchRequest(string Name, int DistrictId, string? Address, string? ContactPhoneNumber, decimal HourlyPrice, List<int>? FeatureIds);
 public record UpdatePitchRequest(string Name, int DistrictId, string? Address, string? ContactPhoneNumber, decimal HourlyPrice, List<int>? FeatureIds, bool IsActive);
 public record UpdatePitchPriceRequest(decimal HourlyPrice);
-public record CreateAppointmentRequest(int PitchId, DateTime Date, string CustomerName, string CustomerPhoneNumber);
+public record CreateAppointmentRequest(int PitchId, DateTime Date, string CustomerName, string CustomerPhoneNumber, bool IsSubscription = false, int SubscriptionWeeks = 1, bool ForceCreate = false);
 public record UpdateAppointmentRequest(string CustomerName, string CustomerPhoneNumber);
+
+public record ConflictInfo(DateTime Date, string CustomerName, string CustomerPhoneNumber);
+public record CreateAppointmentResponse(bool Success, int CreatedCount, List<ConflictInfo> Conflicts);

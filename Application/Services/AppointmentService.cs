@@ -15,30 +15,68 @@ public class AppointmentService : IAppointmentService
         _context = context;
     }
 
-    public async Task<bool> CreateAppointmentAsync(CreateAppointmentRequest request)
+    public async Task<CreateAppointmentResponse> CreateAppointmentAsync(CreateAppointmentRequest request)
     {
-        // Simple 1-hour slot check
-        var startTime = request.Date;
-        var endTime = startTime.AddHours(1);
+        var weeks = request.IsSubscription ? Math.Clamp(request.SubscriptionWeeks, 1, 52) : 1;
+        var groupId = request.IsSubscription ? Guid.NewGuid() : (Guid?)null;
 
-        var exists = await _context.Appointments
-            .AnyAsync(a => a.PitchId == request.PitchId &&
-                           ((a.Date >= startTime && a.Date < endTime) ||
-                            (a.Date.AddHours(1) > startTime && a.Date.AddHours(1) <= endTime)));
+        var conflicts = new List<ConflictInfo>();
+        var slotsToCreate = new List<(DateTime slotDate, bool hasConflict)>();
 
-        if (exists) return false;
-
-        var appointment = new Appointment
+        // Phase 1: Check all weeks for conflicts
+        for (int w = 0; w < weeks; w++)
         {
-            PitchId = request.PitchId,
-            Date = request.Date,
-            CustomerName = request.CustomerName,
-            CustomerPhoneNumber = request.CustomerPhoneNumber
-        };
+            var slotDate = request.Date.AddDays(w * 7);
+            var endTime = slotDate.AddHours(1);
 
-        _context.Appointments.Add(appointment);
-        await _context.SaveChangesAsync();
-        return true;
+            var conflicting = await _context.Appointments
+                .Where(a => a.PitchId == request.PitchId &&
+                           ((a.Date >= slotDate && a.Date < endTime) ||
+                            (a.Date.AddHours(1) > slotDate && a.Date.AddHours(1) <= endTime)))
+                .Select(a => new ConflictInfo(a.Date, a.CustomerName, a.CustomerPhoneNumber))
+                .FirstOrDefaultAsync();
+
+            if (conflicting != null)
+            {
+                conflicts.Add(conflicting);
+                slotsToCreate.Add((slotDate, true));
+            }
+            else
+            {
+                slotsToCreate.Add((slotDate, false));
+            }
+        }
+
+        // Phase 2: If there are conflicts and user hasn't confirmed, return the conflicts
+        if (conflicts.Count > 0 && !request.ForceCreate)
+        {
+            return new CreateAppointmentResponse(false, 0, conflicts);
+        }
+
+        // Phase 3: Create only non-conflicting slots
+        var createdCount = 0;
+        foreach (var (slotDate, hasConflict) in slotsToCreate)
+        {
+            if (hasConflict) continue;
+
+            var appointment = new Appointment
+            {
+                PitchId = request.PitchId,
+                Date = slotDate,
+                CustomerName = request.CustomerName,
+                CustomerPhoneNumber = request.CustomerPhoneNumber,
+                IsSubscription = request.IsSubscription,
+                SubscriptionGroupId = groupId
+            };
+
+            _context.Appointments.Add(appointment);
+            createdCount++;
+        }
+
+        if (createdCount > 0)
+            await _context.SaveChangesAsync();
+
+        return new CreateAppointmentResponse(true, createdCount, conflicts);
     }
 
     public async Task<IEnumerable<Appointment>> GetAppointmentsByPitchAsync(int pitchId, DateTime? startDate = null)
@@ -68,12 +106,26 @@ public class AppointmentService : IAppointmentService
         return true;
     }
 
-    public async Task<bool> CancelAppointmentAsync(int id)
+    public async Task<bool> CancelAppointmentAsync(int id, bool cancelAll = false)
     {
         var appointment = await _context.Appointments.FindAsync(id);
         if (appointment == null) return false;
 
-        _context.Appointments.Remove(appointment);
+        if (cancelAll && appointment.IsSubscription && appointment.SubscriptionGroupId.HasValue)
+        {
+            // Delete this appointment and all future appointments in the same subscription group
+            var futureAppointments = await _context.Appointments
+                .Where(a => a.SubscriptionGroupId == appointment.SubscriptionGroupId
+                         && a.Date >= appointment.Date)
+                .ToListAsync();
+
+            _context.Appointments.RemoveRange(futureAppointments);
+        }
+        else
+        {
+            _context.Appointments.Remove(appointment);
+        }
+
         await _context.SaveChangesAsync();
         return true;
     }
